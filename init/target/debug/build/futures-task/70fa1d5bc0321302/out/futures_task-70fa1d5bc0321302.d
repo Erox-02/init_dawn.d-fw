@@ -1,0 +1,10 @@
+/home/archbtw/init_dawn.d-fw/init/target/debug/build/futures-task/70fa1d5bc0321302/out/futures_task-70fa1d5bc0321302.d: /home/archbtw/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-task-0.3.34/src/lib.rs /home/archbtw/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-task-0.3.34/src/spawn.rs /home/archbtw/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-task-0.3.34/src/future_obj.rs /home/archbtw/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-task-0.3.34/src/noop_waker.rs
+
+/home/archbtw/init_dawn.d-fw/init/target/debug/build/futures-task/70fa1d5bc0321302/out/libfutures_task-70fa1d5bc0321302.rlib: /home/archbtw/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-task-0.3.34/src/lib.rs /home/archbtw/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-task-0.3.34/src/spawn.rs /home/archbtw/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-task-0.3.34/src/future_obj.rs /home/archbtw/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-task-0.3.34/src/noop_waker.rs
+
+/home/archbtw/init_dawn.d-fw/init/target/debug/build/futures-task/70fa1d5bc0321302/out/libfutures_task-70fa1d5bc0321302.rmeta: /home/archbtw/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-task-0.3.34/src/lib.rs /home/archbtw/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-task-0.3.34/src/spawn.rs /home/archbtw/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-task-0.3.34/src/future_obj.rs /home/archbtw/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-task-0.3.34/src/noop_waker.rs
+
+/home/archbtw/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-task-0.3.34/src/lib.rs:
+/home/archbtw/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-task-0.3.34/src/spawn.rs:
+/home/archbtw/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-task-0.3.34/src/future_obj.rs:
+/home/archbtw/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-task-0.3.34/src/noop_waker.rs:
