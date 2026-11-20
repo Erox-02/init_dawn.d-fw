@@ -5,10 +5,15 @@
 
 use esp_hal::clock::CpuClock;
 use esp_hal::main;
-use esp_hal::time::{Duration, Instant};
+use esp_hal::time::{Duration, Instant, Rate};
 use esp_hal::gpio::{Input, InputConfig, Pull};
-
+use esp_hal::spi::{Mode, master::{Config, Spi}};
 use esp_println::println;
+use esp_hal::delay::Delay;
+
+use embedded_hal_bus::spi::ExclusiveDevice;
+use embedded_graphics::{pixelcolor::Rgb565, prelude:: *,};
+use mipidsi::{Builder, models::ST7789, interface::SpiInterface, options::{Orientation, Rotation}};
 
 #[panic_handler]
 fn panic(_: &core::panic::PanicInfo) -> ! {
@@ -23,6 +28,7 @@ esp_bootloader_esp_idf::esp_app_desc!();
     clippy::large_stack_frames,
     reason = "it's not unusual to allocate larger buffers etc. in main"
 )]
+
 #[main]
 fn main() -> ! {
     let peripherals = esp_hal::init(
@@ -30,6 +36,7 @@ fn main() -> ! {
     );
 
     let cfg = esp_hal::gpio::InputConfig::default().with_pull(esp_hal::gpio::Pull::Down);
+    let spi = Spi::new(peripherals.SPI2, Config::default().with_frequency(Rate::from_mhz(10)).with_mode(Mode::_0),).unwrap().with_sck(peripherals.GPIO10).with_mosi(peripherals.GPIO8);
 
 
     let sw1 = esp_hal::gpio::Input::new(peripherals.GPIO3, cfg);
@@ -39,6 +46,38 @@ fn main() -> ! {
     let sw5 = esp_hal::gpio::Input::new(peripherals.GPIO7, cfg);                          // js to test the switches 
 
     let mut previous = [false; 5];
+
+        let cs = Output::new(
+        peripherals.GPIO2,
+        Level::High,
+        OutputConfig::default(),
+    );
+
+    let dc = Output::new(
+        peripherals.GPIO20,
+        Level::Low,
+        OutputConfig::default(),
+    );
+
+    let rst = Output::new(
+        peripherals.GPIO9,
+        Level::High,
+        OutputConfig::default(),
+    );
+
+    let spidev = ExclusiveDevice::new(
+        spi,
+        cs,
+        Delay::new(),
+    ).unwrap();
+
+    let mut buffer = [0u8; 512]; // got the sizes and specs of the display frm here `https://blare.hackclub.com/docs/firmware` the guide is good af , but i am a crab lol
+
+    let interface = SpiInterface::new(
+        spidev,
+        dc,
+        &buffer,
+    );
 
     loop {
         let current = [sw1.is_high(), sw2.is_high(), sw3.is_high(), sw4.is_high(), sw5.is_high(),];
@@ -52,5 +91,6 @@ fn main() -> ! {
         previous = current;
         let start = Instant::now();
         while start.elapsed() < Duration::from_millis(20) {}
-    }
+    } 
+
 }

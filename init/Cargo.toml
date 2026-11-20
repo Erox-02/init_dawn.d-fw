@@ -15,6 +15,10 @@ esp-bootloader-esp-idf = { version = "0.6.0", features = ["esp32c3"] }
 
 critical-section = "1.2.0"
 
+embedded-hal-bus = "0.3.0"
+embedded-graphics = "0.8.1"
+mipidsi = "0.10.0"
+
 
 # For fine tuning these settings, please refer to https://doc.rust-lang.org/cargo/reference/profiles.html
 [profile.dev]
