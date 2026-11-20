@@ -1,9 +1,0 @@
-/home/archbtw/init_dawn.d-fw/init/target/debug/build/esp-metadata-generated/55bf59251b267bd9/out/esp_metadata_generated-55bf59251b267bd9.d: /home/archbtw/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/esp-metadata-generated-0.5.3/src/lib.rs /home/archbtw/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/esp-metadata-generated-0.5.3/src/_generated_esp32c3.rs /home/archbtw/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/esp-metadata-generated-0.5.3/src/_build_script_utils.rs
-
-/home/archbtw/init_dawn.d-fw/init/target/debug/build/esp-metadata-generated/55bf59251b267bd9/out/libesp_metadata_generated-55bf59251b267bd9.rlib: /home/archbtw/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/esp-metadata-generated-0.5.3/src/lib.rs /home/archbtw/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/esp-metadata-generated-0.5.3/src/_generated_esp32c3.rs /home/archbtw/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/esp-metadata-generated-0.5.3/src/_build_script_utils.rs
-
-/home/archbtw/init_dawn.d-fw/init/target/debug/build/esp-metadata-generated/55bf59251b267bd9/out/libesp_metadata_generated-55bf59251b267bd9.rmeta: /home/archbtw/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/esp-metadata-generated-0.5.3/src/lib.rs /home/archbtw/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/esp-metadata-generated-0.5.3/src/_generated_esp32c3.rs /home/archbtw/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/esp-metadata-generated-0.5.3/src/_build_script_utils.rs
-
-/home/archbtw/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/esp-metadata-generated-0.5.3/src/lib.rs:
-/home/archbtw/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/esp-metadata-generated-0.5.3/src/_generated_esp32c3.rs:
-/home/archbtw/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/esp-metadata-generated-0.5.3/src/_build_script_utils.rs:
