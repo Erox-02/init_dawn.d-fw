@@ -6,7 +6,7 @@
 use esp_hal::clock::CpuClock;
 use esp_hal::main;
 use esp_hal::time::{Duration, Instant, Rate};
-use esp_hal::gpio::{Input, InputConfig, Pull};
+use esp_hal::gpio::{Input, InputConfig, Pull, Output, OutputConfig, Level};     // bruh forgot output
 use esp_hal::spi::{Mode, master::{Config, Spi}};
 use esp_println::println;
 use esp_hal::delay::Delay;
@@ -76,8 +76,18 @@ fn main() -> ! {
     let interface = SpiInterface::new(
         spidev,
         dc,
-        &buffer,
+        &mut buffer,
     );
+
+    let mut delay = Delay::new();
+    
+    let mut display = Builder::new(ST7789, interface)
+    .display_size(76, 284)
+    .display_offset(82, 18)
+    .orientation(Orientation::new().rotate(Rotation::Deg90))
+    .reset_pin(rst)
+    .init(&mut delay)
+    .unwrap();
 
     loop {
         let current = [sw1.is_high(), sw2.is_high(), sw3.is_high(), sw4.is_high(), sw5.is_high(),];
@@ -89,8 +99,15 @@ fn main() -> ! {
         } 
 
         previous = current;
-        let start = Instant::now();
-        while start.elapsed() < Duration::from_millis(20) {}
+        display.clear(Rgb565::RED).unwrap();
+        delay.delay_millis(1000);
+        display.clear(Rgb565::GREEN).unwrap();
+        delay.delay_millis(1000);
+        display.clear(Rgb565::BLUE).unwrap();
+        delay.delay_millis(1000);
+        display.clear(Rgb565::WHITE).unwrap();
+        delay.delay_millis(1000);
+
     } 
 
 }
