@@ -1,5 +1,5 @@
 // on this build i had a lot of probs , like while building , u needa use `cargo build --target riscv32imc-unknown-none-elf` instead of normal cargo build bec it throws some omnious atomic err 
-
+// my display had bl reverse logic so bl - high then actually off and bl -low then actually on , kind of hell in debugging but i fixed it with a lot of suffering anyways
 #![no_std]
 #![no_main]
 
@@ -65,6 +65,12 @@ fn main() -> ! {
         OutputConfig::default(),
     );
 
+    let mut buzzer = Output::new(
+      peripherals.GPIO21,
+        Level::Low,
+        OutputConfig::default(),
+    );
+
     let spidev = ExclusiveDevice::new(
         spi,
         cs,
@@ -90,6 +96,7 @@ fn main() -> ! {
     .unwrap();
 
     loop {
+        buzzer.set_low();
         let current = [sw1.is_high(), sw2.is_high(), sw3.is_high(), sw4.is_high(), sw5.is_high(),];
         
         for i in 0..5 {
