@@ -78,13 +78,6 @@ fn main() -> ! {
     ).unwrap();
 
     let mut buffer = [0u8; 512]; // got the sizes and specs of the display frm here `https://blare.hackclub.com/docs/firmware` the guide is good af , but i am a crab lol
-    let current = [
-        sw1.is_high(),
-        sw2.is_high(),
-        sw3.is_high(),
-        sw4.is_high(),
-        sw5.is_high(),
-    ];
     let interface = SpiInterface::new(
         spidev,
         dc,
@@ -104,7 +97,14 @@ fn main() -> ! {
     );
 
     loop{
-        if current[4] && !previous[4] {
+        let current = [
+            sw1.is_high(),
+            sw2.is_high(),
+            sw3.is_high(),
+            sw4.is_high(),
+            sw5.is_high(),
+        ];
+        if current[4] && !previous[4] { // lol i was tryin to fix it by flashing diff comps again and again but then i realized it wont print anything unless you press the button first :skull:
             multiplier = match multiplier {
                 1 => 2,
                 2 => 5,
@@ -118,18 +118,19 @@ fn main() -> ! {
                 1 => "1x",
                 2 => "2x",
                 5 => "5x",
-                10 => "10",
+                10 => "10x",
                 15 => "15x",
                 _ => "1x",
             };  // idk why the hell did i write this , i could've made an enum and yeah it wd have worked too
 
             Text::with_baseline(
                 val,
-                Point::new(0,0), // corner at the start
+                Point::new(110,8), // corner at the start
                 white,
                 Baseline::Top,
             ).draw(&mut display).unwrap();
         }
+        previous = current;
     }
 
 //     //=================================== AI SLOP==========================
