@@ -96,6 +96,10 @@ fn main() -> ! {
         Rgb565::WHITE,
     );
 
+    display.clear(Rgb565::BLACK).unwrap();
+
+    Text::with_baseline("1x", Point::new(0, 0), white, Baseline::Top,).draw(&mut display).unwrap();
+
     loop{
         let current = [
             sw1.is_high(),
@@ -125,12 +129,13 @@ fn main() -> ! {
 
             Text::with_baseline(
                 val,
-                Point::new(110,8), // corner at the start
+                Point::new(0,0), // corner at the start
                 white,
                 Baseline::Top,
             ).draw(&mut display).unwrap();
         }
         previous = current;
+        delay.delay_millis(20);
     }
 
 //     //=================================== AI SLOP==========================
