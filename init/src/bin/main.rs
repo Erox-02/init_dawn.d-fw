@@ -96,63 +96,67 @@ fn main() -> ! {
 
     buzzer.set_low();
 
-    //=================================== AI SLOP==========================
+//     //=================================== AI SLOP==========================
 
-    display.clear(Rgb565::BLACK).unwrap();
-        let white = MonoTextStyle::new(
-        &FONT_6X10,
-        Rgb565::WHITE,
-    );
+// display.clear(Rgb565::BLACK).unwrap();
 
-    let green = MonoTextStyle::new(
-        &FONT_6X10,
-        Rgb565::GREEN,
-    );
+// let white = MonoTextStyle::new(
+//     &FONT_6X10,
+//     Rgb565::WHITE,
+// );
 
-    Text::with_baseline(
-        "INIT_DAWN",
-        Point::new(8, 80),
-        white,
-        Baseline::Top,
-    ).draw(&mut display).unwrap();
+// let green = MonoTextStyle::new(
+//     &FONT_6X10,
+//     Rgb565::GREEN,
+// );
 
-    Text::with_baseline(
-        "BOOTING SYSTEM...",
-        Point::new(8, 105),
-        green,
-        Baseline::Top,
-    )
-    .draw(&mut display)
-    .unwrap();
+// // Title
+// Text::with_baseline(
+//     "INIT_DAWN",
+//     Point::new(110, 8),
+//     white,
+//     Baseline::Top,
+// )
+// .draw(&mut display)
+// .unwrap();
 
-// Progress bar
-    for i in 0..=100 {
-        let width = (i * 60 / 100) as u32;
+// // Boot message
+// Text::with_baseline(
+//     "BOOTING SYSTEM...",
+//     Point::new(94, 25),
+//     green,
+//     Baseline::Top,
+// )
+// .draw(&mut display)
+// .unwrap();
 
-        Rectangle::new(
-            Point::new(8, 130),
-            Size::new(width, 5),
-        )
-        .into_styled(
-            PrimitiveStyle::with_fill(Rgb565::GREEN)
-        )
-        .draw(&mut display)
-        .unwrap();
+// // Progress bar
+// for i in 0..=100 {
+//     let width = (i * 120 / 100) as u32;
 
-        delay.delay_millis(25);
-    }
+//     Rectangle::new(
+//         Point::new(82, 43),
+//         Size::new(width, 5),
+//     )
+//     .into_styled(
+//         PrimitiveStyle::with_fill(Rgb565::GREEN)
+//     )
+//     .draw(&mut display)
+//     .unwrap();
 
-// Ready message
-    Text::with_baseline(
-        "SYSTEM READY",
-        Point::new(8, 150),
-        green,
-        Baseline::Top,
-    )
-    .draw(&mut display)
-    .unwrap();
-        
+//     delay.delay_millis(25);
+// }
 
-    loop {} 
+// // Ready
+// Text::with_baseline(
+//     "SYSTEM READY",
+//     Point::new(103, 57),
+//     green,
+//     Baseline::Top,
+// )
+// .draw(&mut display)
+// .unwrap();
 
+// loop {} 
+//==================================it was slop i used it and now ik the exact cords of my display lol==========================
 }
