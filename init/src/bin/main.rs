@@ -12,7 +12,7 @@ use esp_println::println;
 use esp_hal::delay::Delay;
 
 use embedded_hal_bus::spi::ExclusiveDevice;
-use embedded_graphics::{pixelcolor::Rgb565, prelude:: *,};
+use embedded_graphics::{pixelcolor::Rgb565, prelude:: *, primitives::{PrimitiveStyle, Rectangle}, mono_font::{ascii::FONT_6X10, MonoTextStyle}, text::{Baseline, Text}, image::{Image, ImageRawBE}};
 use mipidsi::{Builder, models::ST7789, interface::SpiInterface, options::{Orientation, Rotation}};
 
 #[panic_handler]
@@ -37,7 +37,9 @@ fn main() -> ! {
 
     let cfg = esp_hal::gpio::InputConfig::default().with_pull(esp_hal::gpio::Pull::Down);
     let spi = Spi::new(peripherals.SPI2, Config::default().with_frequency(Rate::from_mhz(10)).with_mode(Mode::_0),).unwrap().with_sck(peripherals.GPIO10).with_mosi(peripherals.GPIO8);
-
+    const RICK_RAW: &[u8] = include_bytes!("/home/archbtw/init_dawn.d-fw/init/rick.raw");
+    const IMG_W: u32 = 320;
+    const IMG_H: u32 = 240;
 
     let sw1 = esp_hal::gpio::Input::new(peripherals.GPIO3, cfg);
     let sw2 = esp_hal::gpio::Input::new(peripherals.GPIO4, cfg);
@@ -105,15 +107,16 @@ fn main() -> ! {
             }
         } 
 
-        previous = current;
-        display.clear(Rgb565::RED).unwrap();
-        delay.delay_millis(1000);
-        display.clear(Rgb565::GREEN).unwrap();
-        delay.delay_millis(1000);
-        display.clear(Rgb565::BLUE).unwrap();
-        delay.delay_millis(1000);
-        display.clear(Rgb565::WHITE).unwrap();
-        delay.delay_millis(1000);
+
+    let raw: ImageRawBE<Rgb565> = ImageRawBE::new(RICK_RAW, IMG_W);  // gemini generated dont think this img processing part is written by me 
+    let crop_x = (IMG_W.saturating_sub(284) / 2) as i32;
+    let crop_y = (IMG_H.saturating_sub(76) / 2) as i32;
+    let cropped = raw.sub_image(&Rectangle::new(
+        Point::new(crop_x, crop_y),
+        Size::new(284.min(IMG_W), 76.min(IMG_H)),
+    ));
+
+    Image::new(&cropped, Point::zero()).draw(&mut display).unwrap();
 
     } 
 
