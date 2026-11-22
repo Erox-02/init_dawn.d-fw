@@ -207,12 +207,19 @@ fn main() -> ! {
         }
 
     if current[2] && !previous[2] {
-        if shift_on {
-             secs = (secs + 60 - (multiplier % 60)) % 60;
-             need_rst = true;
+        if multiplier == 60 {
+            if shift_on {
+                mins = (mins + 59) % 60;
+        } else {
+                mins = (mins + 1) % 60;
+            }
+            need_rst = true;
+        } else if shift_on {
+            secs = (secs + 60 - (multiplier % 60)) % 60;
+            need_rst = true;
         } else {
             secs = (secs + multiplier) % 60;
-            need_rst = true;  // lol i am so clever 
+            need_rst = true;
         }
     }
 
