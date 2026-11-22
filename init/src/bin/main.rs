@@ -99,7 +99,7 @@ fn main() -> ! {
     display.clear(Rgb565::BLACK).unwrap();
 
     Text::with_baseline("1x", Point::new(0, 0), white, Baseline::Top,).draw(&mut display).unwrap();
-
+    Text::with_baseline("Shift : ON", Point::new(220, 0), white, Baseline::Top,).draw(&mut display).unwrap();
     let mut shift_on = false;
 
     // ui archi for the timer and blah blah 
@@ -124,7 +124,7 @@ fn main() -> ! {
                 10 => 15,
                 _ => 1,
             };
-        display.clear(Rgb565::BLACK).unwrap();
+        Rectangle::new(Point::new(0,0),Size::new(24,10)).into_styled(PrimitiveStyle::with_fill(Rgb565::BLACK)).draw(&mut display).unwrap();
 
         let val = match multiplier {
                 1 => "1x",
@@ -145,7 +145,9 @@ fn main() -> ! {
 
     if current[0] && !previous[0] {
         shift_on = !shift_on;
-    display.clear(Rgb565::BLACK).unwrap();
+    Rectangle::new(Point::new(210,0),Size::new(230,10)).into_styled(PrimitiveStyle::with_fill(Rgb565::BLACK)).draw(&mut display).unwrap(); // parameters and points guessed i meant measured through a lot of tests
+
+    // display.clear(Rgb565::BLACK).unwrap();
 
     let shit_text = if shift_on {
         "Shift : ON"
@@ -160,21 +162,32 @@ fn main() -> ! {
         ).draw(&mut display).unwrap();
         }
 
-    if current[1] && !previous[1] {
+        let mut need_rst = false;
+
+    if current[3] && !previous[3] {
         if shift_on {
              hrs = (hrs + 24 - (multiplier % 24)) % 24;
+             need_rst = true;
         } else {
-            hrs = (hrs + multiplier) % 24;  // lol i am so clever 
+            hrs = (hrs + multiplier) % 24;
+            need_rst = true;  // lol i am so clever 
         }
     }
 
     if current[2] && !previous[2] {
         if shift_on {
-            mins = (mins + 24 - (multiplier % 24)) % 24;
+            mins = (mins + 60 - (multiplier % 60)) % 60;
+            need_rst = true;
         } else {
-            mins = (hrs + multiplier) % 24;     
+            mins = (mins + multiplier) % 60;
+            need_rst = true;  // history repeats hereby proved , i did the same err 20 mins ago lol      
         }
     }
+
+    if need_rst {
+        Rectangle::new(Point::new(120,20),Size::new(160,60)).into_styled(PrimitiveStyle::with_fill(Rgb565::BLACK)).draw(&mut display).unwrap(); // parameters and points guessed i meant measured through a lot of tests
+
+
     // this logic was ai generated
     let timer_text = [   
         b'0' + hrs / 10,
@@ -186,7 +199,7 @@ fn main() -> ! {
 
     let timer_str = core::str::from_utf8(&timer_text).unwrap();
 
-    display.clear(Rgb565::BLACK).unwrap();
+    // display.clear(Rgb565::BLACK).unwrap();
     Text::with_baseline(
         timer_str,
         Point::new(120, 30),
@@ -195,6 +208,7 @@ fn main() -> ! {
     )
     .draw(&mut display)
     .unwrap();
+    }
 
     // end of slop a.k.a <eos>
     
