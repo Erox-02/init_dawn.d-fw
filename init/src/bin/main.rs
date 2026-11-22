@@ -101,7 +101,7 @@ fn main() -> ! {
     Text::with_baseline("1x", Point::new(0, 0), white, Baseline::Top,).draw(&mut display).unwrap();
     Text::with_baseline("Shift : ON", Point::new(220, 0), white, Baseline::Top,).draw(&mut display).unwrap();
     Text::with_baseline(
-        "00:00",
+        "00:00.00",
         Point::new(120, 30),
         white,
         Baseline::Top,
@@ -111,6 +111,7 @@ fn main() -> ! {
     // ui archi for the timer and blah blah 
     let mut hrs: u8 = 0;
     let mut mins: u8 = 0;
+    let mut secs: u8 = 0; // dont pronounce it wrong :skull:
     let mut cnt_down = false; // it is count bruh
     let mut tick = Instant::now();
 
@@ -126,7 +127,7 @@ fn main() -> ! {
         let enter = current[1] && !previous[1];
         let mut need_rst = false;
 
-        if enter && !cnt_down && (hrs != 0 || mins != 0) {
+        if enter && !cnt_down && (hrs != 0 || mins != 0 || secs != 0) {
             cnt_down = true;
             tick = Instant::now();
             println!("cntdown")
@@ -134,15 +135,20 @@ fn main() -> ! {
 
         if cnt_down {
             let now = Instant::now();
-            if (now - tick) >= Duration::from_secs(60) { //some old vs new api lol lts vs cargo suggested one 
-                tick = tick + Duration::from_secs(60);
-            if mins > 0 {
+            if (now - tick) >= Duration::from_secs(1) { //some old vs new api lol lts vs cargo suggested one 
+                tick = tick + Duration::from_secs(1);
+            
+            if secs > 0 {
+                secs -= 0;
+            } else if mins > 0 {
                 mins -= 1;
+                secs = 59;
             } else if hrs > 0 {
                 hrs -= 1;
                 mins = 59;
+                secs = 59;  
             }
-            if hrs == 0 && mins == 0 {
+            if hrs == 0 && mins == 0 && secs == 0 {
                 cnt_down = false;
                 println!("fucking cnt_down has finished")
             }
@@ -227,7 +233,10 @@ fn main() -> ! {
         b':',
         b'0' + mins / 10,
         b'0' + mins % 10,
-    ];
+        b':',
+        b'0' + secs / 10,
+        b'0' + secs % 10,
+        ];
 
     let timer_str = core::str::from_utf8(&timer_text).unwrap();
 
