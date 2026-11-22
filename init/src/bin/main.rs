@@ -10,7 +10,7 @@ use esp_hal::gpio::{Input, InputConfig, Pull, Output, OutputConfig, Level};     
 use esp_hal::spi::{Mode, master::{Config, Spi}};
 use esp_println::println;
 use esp_hal::delay::Delay;
-
+mod gif;
 use embedded_hal_bus::spi::ExclusiveDevice;
 use embedded_graphics::{pixelcolor::Rgb565, prelude::*, primitives::{PrimitiveStyle, Rectangle}, mono_font::{ascii::{FONT_6X10, FONT_10X20}, MonoTextStyle}, text::{Baseline, Text},
 };use mipidsi::{Builder, models::ST7789, interface::SpiInterface, options::{Orientation, Rotation}};
@@ -113,6 +113,11 @@ fn main() -> ! {
     let mut secs: u8 = 0; // dont pronounce it wrong :skull:
     let mut cnt_down = false; // it is count bruh
     let mut tick = Instant::now();
+
+    gif::show_frame(
+        &mut display,
+        include_bytes!("../frames/frame_000.raw"),
+    );
 
     loop {
         let current = [
