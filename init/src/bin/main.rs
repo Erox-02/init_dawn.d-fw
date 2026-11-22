@@ -218,10 +218,16 @@ fn main() -> ! {
 
     if current[3] && !previous[3] {
         if shift_on {
-            mins = (mins + 60 - (multiplier % 60)) % 60;
+            let total = hrs as i16 * 60 + mins as i16 - multiplier as i16;
+            let total = total.rem_euclid(24 * 60);
+            hrs = (total / 60) as u8;
+            mins = (total % 60) as u8;
             need_rst = true;
         } else {
-            mins = (mins + multiplier) % 60;
+            let total = hrs as u16 * 60 + mins as u16 + multiplier as u16;
+            let total = total % (24 * 60);
+            hrs = (total / 60) as u8;
+            mins = (total % 60) as u8;
             need_rst = true;  // history repeats hereby proved , i did the same err 20 mins ago lol      
         }
     }
