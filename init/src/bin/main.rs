@@ -100,14 +100,21 @@ fn main() -> ! {
 
     Text::with_baseline("1x", Point::new(0, 0), white, Baseline::Top,).draw(&mut display).unwrap();
     Text::with_baseline("Shift : ON", Point::new(220, 0), white, Baseline::Top,).draw(&mut display).unwrap();
+    Text::with_baseline(
+        "00:00",
+        Point::new(120, 30),
+        white,
+        Baseline::Top,
+    ).draw(&mut display).unwrap();
     let mut shift_on = false;
 
     // ui archi for the timer and blah blah 
     let mut hrs: u8 = 0;
     let mut mins: u8 = 0;
+    let mut cnt_down = false; // it is count bruh
+    let mut tick = Instant::now();
 
-
-    loop{
+    loop {
         let current = [
             sw1.is_high(),
             sw2.is_high(),
@@ -116,15 +123,32 @@ fn main() -> ! {
             sw5.is_high(),
         ];
 
-        let mut enter = false; // why i always forget to make vals mutable?
-        if current[1] && !previous[1] {
-            enter = true;
+        let enter = current[1] && !previous[1];
+        let mut need_rst = false;
+
+        if enter && !cnt_down && (hrs != 0 || mins != 0) {
+            cnt_down = true;
+            tick = Instant::now();
+            println!("cntdown")
         }
 
-        if enter {
-            println!("i use arch btw");
+        if cnt_down {
+            let now = Instant::now();
+            if (now - tick) >= Duration::from_secs(60) { //some old vs new api lol lts vs cargo suggested one 
+                tick = tick + Duration::from_secs(60);
+            if mins > 0 {
+                mins -= 1;
+            } else if hrs > 0 {
+                hrs -= 1;
+                mins = 59;
+            }
+            if hrs == 0 && mins == 0 {
+                cnt_down = false;
+                println!("fucking cnt_down has finished")
+            }
+            need_rst = true;
+            }
         }
-
 
         if current[4] && !previous[4] { // lol i was tryin to fix it by flashing diff comps again and again but then i realized it wont print anything unless you press the button first :skull:
             multiplier = match multiplier {
@@ -171,8 +195,6 @@ fn main() -> ! {
             Baseline::Top,
         ).draw(&mut display).unwrap();
         }
-
-        let mut need_rst = false;
 
     if current[3] && !previous[3] {
         if shift_on {
