@@ -124,6 +124,8 @@ fn main() -> ! {
             sw5.is_high(),
         ];
 
+        // ok i js came to realize tht m pcb doesnt have any extra button for the secs , so i will js use cur*[3] as min and cur*[2] as sec , you people be like huh wheres the hour? bro are u autistic ? but i am god in resource management
+        // i will use a 60x multiplier eazzy , and it will make sec min and min sec
         let enter = current[1] && !previous[1];
         let mut need_rst = false;
 
@@ -139,7 +141,7 @@ fn main() -> ! {
                 tick = tick + Duration::from_secs(1);
             
             if secs > 0 {
-                secs -= 0;
+                secs -= 1;
             } else if mins > 0 {
                 mins -= 1;
                 secs = 59;
@@ -162,6 +164,7 @@ fn main() -> ! {
                 2 => 5,
                 5 => 10,
                 10 => 15,
+                15 => 60,
                 _ => 1,
             };
         Rectangle::new(Point::new(0,0),Size::new(24,10)).into_styled(PrimitiveStyle::with_fill(Rgb565::BLACK)).draw(&mut display).unwrap();
@@ -172,6 +175,7 @@ fn main() -> ! {
                 5 => "5x",
                 10 => "10x",
                 15 => "15x",
+                60 => "60x",
                 _ => "1x",
             };  // idk why the hell did i write this , i could've made an enum and yeah it wd have worked too
 
@@ -202,17 +206,17 @@ fn main() -> ! {
         ).draw(&mut display).unwrap();
         }
 
-    if current[3] && !previous[3] {
+    if current[2] && !previous[2] {
         if shift_on {
-             hrs = (hrs + 24 - (multiplier % 24)) % 24;
+             secs = (secs + 60 - (multiplier % 60)) % 60;
              need_rst = true;
         } else {
-            hrs = (hrs + multiplier) % 24;
+            secs = (secs + multiplier) % 60;
             need_rst = true;  // lol i am so clever 
         }
     }
 
-    if current[2] && !previous[2] {
+    if current[3] && !previous[3] {
         if shift_on {
             mins = (mins + 60 - (multiplier % 60)) % 60;
             need_rst = true;
