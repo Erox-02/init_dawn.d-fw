@@ -102,6 +102,11 @@ fn main() -> ! {
 
     let mut shift_on = false;
 
+    // ui archi for the timer and blah blah 
+    let mut hrs: u8 = 0;
+    let mut mins: u8 = 0;
+
+
     loop{
         let current = [
             sw1.is_high(),
@@ -110,6 +115,7 @@ fn main() -> ! {
             sw4.is_high(),
             sw5.is_high(),
         ];
+
         if current[4] && !previous[4] { // lol i was tryin to fix it by flashing diff comps again and again but then i realized it wont print anything unless you press the button first :skull:
             multiplier = match multiplier {
                 1 => 2,
@@ -153,6 +159,44 @@ fn main() -> ! {
             Baseline::Top,
         ).draw(&mut display).unwrap();
         }
+
+    if current[1] && !previous[1] {
+        if shift_on {
+            hrs = if hrs == 0 { 23 } else { hrs - 1 };
+        } else {
+            hrs = if hrs == 23 { 0 } else { hrs + 1 };
+        }
+    }
+
+    if current[1] && !previous[1] {
+        if shift_on {
+            mins = if mins == 0 { 23 } else { mins - 1 };
+        } else {
+            mins = if mins == 23 { 0 } else { mins + 1 };
+        }
+    }
+    // this logic was ai generated
+    let timer_text = [   
+        b'0' + hrs / 10,
+        b'0' + hrs % 10,
+        b':',
+        b'0' + mins / 10,
+        b'0' + mins % 10,
+    ];
+
+    let timer_str = core::str::from_utf8(&timer_text).unwrap();
+
+    Text::with_baseline(
+        timer_str,
+        Point::new(120, 30),
+        white,
+        Baseline::Top,
+    )
+    .draw(&mut display)
+    .unwrap();
+
+    // end of slop a.k.a <eos>
+    
         delay.delay_millis(20);
         previous = current;
     }
