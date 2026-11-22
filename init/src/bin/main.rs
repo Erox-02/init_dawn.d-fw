@@ -42,7 +42,7 @@ fn main() -> ! {
     let sw2 = esp_hal::gpio::Input::new(peripherals.GPIO4, cfg);
     let sw3 = esp_hal::gpio::Input::new(peripherals.GPIO5, cfg);
     let sw4 = esp_hal::gpio::Input::new(peripherals.GPIO6, cfg);
-    let sw5 = esp_hal::gpio::Input::new(peripherals.GPIO7, cfg);                          // js to test the switches 
+    let sw5 = esp_hal::gpio::Input::new(peripherals.GPIO7, cfg); 
 
     let mut previous = [false; 5];
     let mut multiplier = 1; 
@@ -100,6 +100,8 @@ fn main() -> ! {
 
     Text::with_baseline("1x", Point::new(0, 0), white, Baseline::Top,).draw(&mut display).unwrap();
 
+    let mut shift_on = false;
+
     loop{
         let current = [
             sw1.is_high(),
@@ -134,8 +136,25 @@ fn main() -> ! {
                 Baseline::Top,
             ).draw(&mut display).unwrap();
         }
-        previous = current;
+
+    if current[0] && !previous[0] {
+        shift_on = !shift_on;
+    display.clear(Rgb565::BLACK).unwrap();
+
+    let shit_text = if shift_on {
+        "Shift : ON"
+    } else {
+        "Shift : OFF"
+    };
+        Text::with_baseline(
+            shit_text, // a typo tht stayed  as a meme
+            Point::new(220,0), // right corner at the start
+            white,
+            Baseline::Top,
+        ).draw(&mut display).unwrap();
+        }
         delay.delay_millis(20);
+        previous = current;
     }
 
 //     //=================================== AI SLOP==========================
