@@ -12,7 +12,7 @@ use esp_println::println;
 use esp_hal::delay::Delay;
 
 use embedded_hal_bus::spi::ExclusiveDevice;
-use embedded_graphics::{pixelcolor::Rgb565, prelude::*, primitives::{PrimitiveStyle, Rectangle}, mono_font::{ascii::FONT_6X10, MonoTextStyle}, text::{Baseline, Text},
+use embedded_graphics::{pixelcolor::Rgb565, prelude::*, primitives::{PrimitiveStyle, Rectangle}, mono_font::{ascii::{FONT_6X10, FONT_10X20}, MonoTextStyle}, text::{Baseline, Text},
 };use mipidsi::{Builder, models::ST7789, interface::SpiInterface, options::{Orientation, Rotation}};
 
 #[panic_handler]
@@ -91,19 +91,18 @@ fn main() -> ! {
 
     buzzer.set_low();
 
-    let white = MonoTextStyle::new(
-        &FONT_6X10,
-        Rgb565::WHITE,
-    );
+    let white = MonoTextStyle::new(&FONT_6X10, Rgb565::WHITE,);
 
     display.clear(Rgb565::BLACK).unwrap();
+
+    let tim = MonoTextStyle::new(&FONT_10X20, Rgb565::WHITE,);
 
     Text::with_baseline("1x", Point::new(0, 0), white, Baseline::Top,).draw(&mut display).unwrap();
     Text::with_baseline("Shift : ON", Point::new(220, 0), white, Baseline::Top,).draw(&mut display).unwrap();
     Text::with_baseline(
-        "00:00.00",
-        Point::new(120, 30),
-        white,
+        "00:00:00",
+        Point::new(100, 27),   // it took me 10 turns to js make it in perfect size :sobspin:
+        tim,
         Baseline::Top,
     ).draw(&mut display).unwrap();
     let mut shift_on = false;
@@ -206,7 +205,7 @@ fn main() -> ! {
         ).draw(&mut display).unwrap();
         }
 
-    if current[2] && !previous[2] {
+    if current[2] && !previous[2] && !cnt_down {
         if multiplier == 60 {
             if shift_on {
                 mins = (mins + 59) % 60;
@@ -223,7 +222,7 @@ fn main() -> ! {
         }
     }
 
-    if current[3] && !previous[3] {
+    if current[3] && !previous[3] && !cnt_down {
         if shift_on {
             let total = hrs as i16 * 60 + mins as i16 - multiplier as i16;
             let total = total.rem_euclid(24 * 60);
@@ -240,7 +239,7 @@ fn main() -> ! {
     }
 
     if need_rst {
-        Rectangle::new(Point::new(120,20),Size::new(160,60)).into_styled(PrimitiveStyle::with_fill(Rgb565::BLACK)).draw(&mut display).unwrap(); // parameters and points guessed i meant measured through a lot of tests
+        Rectangle::new(Point::new(100,20),Size::new(160,60)).into_styled(PrimitiveStyle::with_fill(Rgb565::BLACK)).draw(&mut display).unwrap(); // parameters and points guessed i meant measured through a lot of tests
 
 
     // this logic was ai generated
@@ -260,8 +259,9 @@ fn main() -> ! {
     // display.clear(Rgb565::BLACK).unwrap();
     Text::with_baseline(
         timer_str,
-        Point::new(120, 30),
-        white,
+        Point::new(100, 27),
+        // Point::new(120, 30), // looks pretty odd 
+        tim,
         Baseline::Top,
     )
     .draw(&mut display)
