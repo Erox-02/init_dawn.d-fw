@@ -168,11 +168,11 @@ fn main() -> ! {
         }
     }
 
-    if current[1] && !previous[1] {
+    if current[2] && !previous[2] {
         if shift_on {
-            mins = if mins == 0 { 23 } else { mins - 1 };
+            mins = if mins == 0 { 59 } else { mins - 1 };
         } else {
-            mins = if mins == 23 { 0 } else { mins + 1 };
+            mins = if mins == 59 { 0 } else { mins + 1 };
         }
     }
     // this logic was ai generated
@@ -186,6 +186,7 @@ fn main() -> ! {
 
     let timer_str = core::str::from_utf8(&timer_text).unwrap();
 
+    display.clear(Rgb565::BLACK).unwrap();
     Text::with_baseline(
         timer_str,
         Point::new(120, 30),
