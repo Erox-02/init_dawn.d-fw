@@ -162,17 +162,17 @@ fn main() -> ! {
 
     if current[1] && !previous[1] {
         if shift_on {
-            hrs = if hrs == 0 { 23 } else { hrs - 1 };
+             hrs = (hrs + 24 - (multiplier % 24)) % 24;
         } else {
-            hrs = if hrs == 23 { 0 } else { hrs + 1 };
+            hrs = (hrs + multiplier) % 24;  // lol i am so clever 
         }
     }
 
     if current[2] && !previous[2] {
         if shift_on {
-            mins = if mins == 0 { 59 } else { mins - 1 };
+            mins = (mins + 24 - (multiplier % 24)) % 24;
         } else {
-            mins = if mins == 59 { 0 } else { mins + 1 };
+            mins = (hrs + multiplier) % 24;     
         }
     }
     // this logic was ai generated
