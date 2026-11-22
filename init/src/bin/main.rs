@@ -116,6 +116,16 @@ fn main() -> ! {
             sw5.is_high(),
         ];
 
+        let mut enter = false; // why i always forget to make vals mutable?
+        if current[1] && !previous[1] {
+            enter = true;
+        }
+
+        if enter {
+            println!("i use arch btw");
+        }
+
+
         if current[4] && !previous[4] { // lol i was tryin to fix it by flashing diff comps again and again but then i realized it wont print anything unless you press the button first :skull:
             multiplier = match multiplier {
                 1 => 2,
