@@ -10,10 +10,9 @@ use esp_hal::gpio::{Input, InputConfig, Pull, Output, OutputConfig, Level};     
 use esp_hal::spi::{Mode, master::{Config, Spi}};
 use esp_println::println;
 use esp_hal::delay::Delay;
-mod gif;
 use embedded_hal_bus::spi::ExclusiveDevice;
-use embedded_graphics::{pixelcolor::Rgb565, prelude::*, primitives::{PrimitiveStyle, Rectangle}, mono_font::{ascii::{FONT_6X10, FONT_10X20}, MonoTextStyle}, text::{Baseline, Text},
-};use mipidsi::{Builder, models::ST7789, interface::SpiInterface, options::{Orientation, Rotation}};
+use embedded_graphics::{pixelcolor::Rgb565, prelude::*, primitives::{PrimitiveStyle, Rectangle}, mono_font::{ascii::{FONT_6X10, FONT_10X20}, MonoTextStyle}, text::{Baseline, Text},image::{Image, ImageRaw}};
+use mipidsi::{Builder, models::ST7789, interface::SpiInterface, options::{Orientation, Rotation}};
 
 #[panic_handler]
 fn panic(_: &core::panic::PanicInfo) -> ! {
@@ -118,8 +117,7 @@ fn main() -> ! {
     let frames: [&[u8]; 15] = [include_bytes!("../frames/frame_000.raw"),include_bytes!("../frames/frame_001.raw"),include_bytes!("../frames/frame_002.raw"),include_bytes!("../frames/frame_003.raw"),include_bytes!("../frames/frame_004.raw"),
     include_bytes!("../frames/frame_005.raw"),include_bytes!("../frames/frame_006.raw"),include_bytes!("../frames/frame_007.raw"),include_bytes!("../frames/frame_008.raw"),include_bytes!("../frames/frame_009.raw"),include_bytes!("../frames/frame_010.raw"),
     include_bytes!("../frames/frame_011.raw"),include_bytes!("../frames/frame_012.raw"),include_bytes!("../frames/frame_013.raw"),include_bytes!("../frames/frame_014.raw"),];
-    let mut l:bool = false;    
-    gif::disp_gif(&mut display, &frames, &mut delay, &mut l);
+    let mut alarm: bool = false;    
 
     loop {
         let current = [
@@ -158,7 +156,7 @@ fn main() -> ! {
             }
             if hrs == 0 && mins == 0 && secs == 0 {
                 cnt_down = false;
-                println!("fucking cnt_down has finished")
+                alarm = true;
             }
             need_rst = true;
             }
@@ -273,6 +271,18 @@ fn main() -> ! {
     )
     .draw(&mut display)
     .unwrap();
+    }
+
+    if alarm { // another file was suchh a hassle :sob:
+        for frame in frames{
+        let raw = ImageRaw::<Rgb565>::new(frame, 64);
+        let x = raw.clone(); // idk why but compiler threw an err on same stance , so i cloned lol its funny 
+
+    Image::new(&raw, Point::new(10, 6)).draw(&mut display).ok();
+    Image::new(&x, Point::new(200, 6)).draw(&mut display).ok();
+    delay.delay_millis(66);
+    buzzer.set_high();
+        }
     }
 
     // end of slop a.k.a <eos>
