@@ -46,6 +46,7 @@ fn main() -> ! {
 
     let mut previous = [false; 5];
     let mut multiplier = 1; 
+    
 
         let cs = Output::new(
         peripherals.GPIO2,
@@ -117,8 +118,8 @@ fn main() -> ! {
     let frames: [&[u8]; 15] = [include_bytes!("../frames/frame_000.raw"),include_bytes!("../frames/frame_001.raw"),include_bytes!("../frames/frame_002.raw"),include_bytes!("../frames/frame_003.raw"),include_bytes!("../frames/frame_004.raw"),
     include_bytes!("../frames/frame_005.raw"),include_bytes!("../frames/frame_006.raw"),include_bytes!("../frames/frame_007.raw"),include_bytes!("../frames/frame_008.raw"),include_bytes!("../frames/frame_009.raw"),include_bytes!("../frames/frame_010.raw"),
     include_bytes!("../frames/frame_011.raw"),include_bytes!("../frames/frame_012.raw"),include_bytes!("../frames/frame_013.raw"),include_bytes!("../frames/frame_014.raw"),];
-    
-    gif::show_frame(&mut display, &frames, &mut delay);
+    let mut l:bool = false;    
+    gif::disp_gif(&mut display, &frames, &mut delay, &mut l);
 
     loop {
         let current = [
