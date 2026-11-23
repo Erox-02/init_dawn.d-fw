@@ -92,11 +92,19 @@ fn main() -> ! {
     buzzer.set_low();
 
     let white = MonoTextStyle::new(&FONT_6X10, Rgb565::WHITE,);
-
+    let tim = MonoTextStyle::new(&FONT_10X20, Rgb565::WHITE,);
     display.clear(Rgb565::BLACK).unwrap();
 
-    let tim = MonoTextStyle::new(&FONT_10X20, Rgb565::WHITE,);
+    let green = MonoTextStyle::new(&FONT_6X10, Rgb565::GREEN);
+    Text::with_baseline("Init_Dawn", Point::new(110, 10), tim, Baseline::Top,).draw(&mut display).unwrap();
 
+    for i in 0..=120 {
+        Rectangle::new(Point::new(82, 30),Size::new(i, 2),).into_styled(PrimitiveStyle::with_fill(Rgb565::GREEN)).draw(&mut display).unwrap();
+        delay.delay_millis(15); // looks so sickkks
+    }
+    Text::with_baseline("readyy", Point::new(124, 43), green ,Baseline::Top).draw(&mut display).unwrap();
+    delay.delay_millis(700);
+        display.clear(Rgb565::BLACK).unwrap();
     Text::with_baseline("1x", Point::new(0, 0), white, Baseline::Top,).draw(&mut display).unwrap();
     Text::with_baseline("Shift : ON", Point::new(220, 0), white, Baseline::Top,).draw(&mut display).unwrap();
     Text::with_baseline(
@@ -274,6 +282,7 @@ fn main() -> ! {
     }
 
     if alarm { // another file was suchh a hassle :sob:
+        display.clear(Rgb565::BLACK).unwrap();
         for frame in frames{
         let raw = ImageRaw::<Rgb565>::new(frame, 64);
         let x = raw.clone(); // idk why but compiler threw an err on same stance , so i cloned lol its funny 
@@ -281,9 +290,11 @@ fn main() -> ! {
     Image::new(&raw, Point::new(10, 6)).draw(&mut display).ok();
     Image::new(&x, Point::new(200, 6)).draw(&mut display).ok();
     delay.delay_millis(66);
+
+            }
+
     buzzer.set_high();
         }
-    }
 
     // end of slop a.k.a <eos>
     
