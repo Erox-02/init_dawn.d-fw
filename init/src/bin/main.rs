@@ -114,10 +114,11 @@ fn main() -> ! {
     let mut cnt_down = false; // it is count bruh
     let mut tick = Instant::now();
 
-    gif::show_frame(
-        &mut display,
-        include_bytes!("../frames/frame_000.raw"),
-    );
+    let frames: [&[u8]; 15] = [include_bytes!("../frames/frame_000.raw"),include_bytes!("../frames/frame_001.raw"),include_bytes!("../frames/frame_002.raw"),include_bytes!("../frames/frame_003.raw"),include_bytes!("../frames/frame_004.raw"),
+    include_bytes!("../frames/frame_005.raw"),include_bytes!("../frames/frame_006.raw"),include_bytes!("../frames/frame_007.raw"),include_bytes!("../frames/frame_008.raw"),include_bytes!("../frames/frame_009.raw"),include_bytes!("../frames/frame_010.raw"),
+    include_bytes!("../frames/frame_011.raw"),include_bytes!("../frames/frame_012.raw"),include_bytes!("../frames/frame_013.raw"),include_bytes!("../frames/frame_014.raw"),];
+    
+    gif::show_frame(&mut display, &frames, &mut delay);
 
     loop {
         let current = [
@@ -278,8 +279,6 @@ fn main() -> ! {
         delay.delay_millis(20);
         previous = current;
     }
-
-//     //=================================== AI SLOP==========================
 
 // display.clear(Rgb565::BLACK).unwrap();
 
